@@ -24,20 +24,13 @@ extract_commands() {
 popman() {
   local curr_buffer=$BUFFER
 
-  local cmds=$(extract_commands "$curr_buffer")
-  local cmd_count=$(echo "$cmds" | wc -l)
-
-  if [ "$cmd_count" -eq 0 ]; then
-    return;
-  fi
-
   local choice
-  if [ "$cmd_count" -eq 1 ]; then
-    choice=$(echo "$cmds" | head -n 1)
-  else
-    # TODO: This should happen in the tmux popup instead of direcly in the buffer
-    choice=$(echo "$cmds" | fzf --height 5 --layout=reverse --prompt="Select the tool you need help with: " --print-query | tr -d '\n')
+  choice=$(extract_commands "$curr_buffer" | fzf --height=15% --min-height 5+ --tmux --layout=reverse --exit-0 --select-1 --prompt="Select the tool you need help with: ")
+
+  if [ $? -ne 0 ]; then
+    return
   fi
+
   if [ "${TMUX}" ]; then
     tmux popup -EE -h 90% -w 90% man "$choice"
   else
