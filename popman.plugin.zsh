@@ -31,12 +31,21 @@ popman() {
     return
   fi
 
+  local command
+  if man -w "$choice" &>/dev/null; then
+    command="man $choice"
+  elif builtin whence -p "$choice" &>/dev/null && "$choice" --help &>/dev/null; then
+    command="$choice --help | less"
+  else
+	command="echo 'no manpage or --help available for command: "\"$choice\""' | less"
+  fi
+
   if [ "${TMUX}" ]; then
-    tmux popup -EE -h 90% -w 90% man "$choice"
+    tmux popup -EE -h 90% -w 90% "$command"
   else
     BUFFER=""
     zle redisplay
-    man "$choice"
+    "$command"
   fi
 
   BUFFER=$curr_buffer
