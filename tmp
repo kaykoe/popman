@@ -1,0 +1,5 @@
+feat: improve parsing pipeline
+
+add '&&', '=' and ';' as to field separators
+discard environment variables
+swap uniq to a more thorough pipeline that removes non-consecutive duplicates
