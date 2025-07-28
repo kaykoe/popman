@@ -2,6 +2,7 @@
 
 extract_commands() {
   local cmd_line=$1
+  # TODO: add help
   # TODO: subshells in expressions, maybe in double quotes and backticks, maaaaybe in curly braces
   # TODO: split fields before seding, this will allow easier parsing
   # TODO: s/^(.*[^"' \
